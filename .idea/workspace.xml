@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9ee0bdbd-2346-499c-8bd8-4fb8ab82ef31" name="Changes" comment="" />
+    <list default="true" id="9ee0bdbd-2346-499c-8bd8-4fb8ab82ef31" name="Changes" comment="Primeiro commit">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/k6-pipeline.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/k6-pipeline.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,21 +16,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Gabriel-Cavalcantte"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Gabriel-Cavalcantte&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Gabriel-Cavalcantte/Studying-k6.git",
-    "accountId": "0313de60-a766-4379-b834-ad72c7a2d8d7"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Gabriel-Cavalcantte/Studying-k6.git&quot;,
+    &quot;accountId&quot;: &quot;0313de60-a766-4379-b834-ad72c7a2d8d7&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 5
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="2t5ytsBQsIexFjOLmeMc3DYesND" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -37,7 +40,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Merging release",
+    "git-widget-placeholder": "release",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -53,9 +56,31 @@
       <option name="presentableId" value="Default" />
       <updated>1739656448002</updated>
     </task>
+    <task id="LOCAL-00001" summary="Primeiro commit">
+      <option name="closed" value="true" />
+      <created>1739755019035</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1739755019035</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Primeiro commit">
+      <option name="closed" value="true" />
+      <created>1739755331122</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1739755331122</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Pipeline" />
+    <MESSAGE value="Primeiro commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Primeiro commit" />
   </component>
 </project>

@@ -3,10 +3,10 @@ name: k6 Tests
 on:
   push:
     branches:
-      - main
+      - release
   pull_request:
     branches:
-      - main
+      - release
 
 jobs:
   performance-tests:
