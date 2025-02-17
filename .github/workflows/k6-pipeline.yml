@@ -13,14 +13,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up k6
-        uses: grafana/k6-action@v0.3.0
-        with:
-          k6_version: "0.56.0"
-
       - name: Run k6 tests
         run: |
           k6 run index.js
