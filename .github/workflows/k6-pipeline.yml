@@ -1,31 +1,24 @@
-name: k6 Load Tests
-
-on:
-  push:
-    branches:
-      - main  # Altere para o nome da branch que você deseja acionar os testes
-  pull_request:
-    branches:
-      - main  # Altere para o nome da branch que você deseja acionar os testes
-
+name: K6 load test
+on: [workflow_dispatch]
+permissions:
+  contents: write
 jobs:
-  run-k6-tests:
+  build: 
+    name: K6 load test
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      - name: step 1 - checkout
         uses: actions/checkout@v3
 
-      - name: Install k6
-        run: |
-          # Baixa e instala o k6
-          sudo apt-get update
-          sudo apt-get install -y ca-certificates gnupg2
-          sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
-          echo "deb https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
-          sudo apt-get update
-          sudo apt-get install -y k6
+      - name: step 2 - run k6 load test
+        uses: grafana/k6-action@v0.2.0
+        with: 
+          filename: scripts/test.js
 
-      - name: Run k6 tests
-        run: |
-          k6 run index.js  # Certifique-se de que o caminho do script está correto
+      - run: ls & mv index.html scripts
+
+      - name: step 4 - upload artifact
+        uses: actions/upload-artifact@v3
+        with: 
+          name: relatorio de testes de performance
+          path: scripts/index.html
