@@ -1,24 +1,33 @@
-name: K6 load test
+name: K6 Load Test
 on: [workflow_dispatch]
 permissions:
   contents: write
+
 jobs:
-  build: 
-    name: K6 load test
+  build:
+    name: K6 Load Test
     runs-on: ubuntu-latest
+
     steps:
-      - name: step 1 - checkout
+      # Passo 1: Checkout do código
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: step 2 - run k6 load test
+      # Passo 2: Executar o teste k6
+      - name: Run k6 load test
         uses: grafana/k6-action@v0.2.0
-        with: 
-          filename: index.js
+        with:
+          filename: ./index.js  # Caminho relativo para o arquivo de teste
 
-      - run: ls & mv index.html scripts
+      # Passo 3: Mover o relatório gerado (se houver)
+      - name: Move report
+        run: |
+          mkdir -p scripts  # Cria a pasta scripts se não existir
+          mv output.html scripts/  # Move o relatório para a pasta scripts
 
-      - name: step 4 - upload artifact
+      # Passo 4: Upload do relatório como artefato
+      - name: Upload artifact
         uses: actions/upload-artifact@v3
-        with: 
-          name: relatorio de testes de performance
-          path: scripts/index.html
+        with:
+          name: relatorio-de-testes-de-performance
+          path: scripts/output.html  # Caminho do relatório movido
