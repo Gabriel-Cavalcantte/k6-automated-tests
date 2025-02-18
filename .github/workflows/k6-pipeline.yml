@@ -13,19 +13,33 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Passo 2: Executar o teste k6
-      - name: Run k6 load test
-        uses: grafana/k6-action@v0.2.0
-        with:
-          filename: ./index.js  # Caminho relativo para o arquivo de teste
+      # Passo 2: Instalar o k6 manualmente
+      - name: Install k6
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ca-certificates gnupg2
+          sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+          echo "deb https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install -y k6
 
-      # Passo 3: Mover o relatório gerado (se houver)
+      # Passo 3: Verificar a instalação do k6
+      - name: Verify k6 installation
+        run: |
+          k6 version
+
+      # Passo 4: Executar o teste k6
+      - name: Run k6 load test
+        run: |
+          k6 run ./index.js  # Certifique-se de que o caminho do arquivo está correto
+
+      # Passo 5: Mover o relatório gerado (se houver)
       - name: Move report
         run: |
           mkdir -p scripts  # Cria a pasta scripts se não existir
           mv output.html scripts/  # Move o relatório para a pasta scripts
 
-      # Passo 4: Upload do relatório como artefato
+      # Passo 6: Upload do relatório como artefato
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
