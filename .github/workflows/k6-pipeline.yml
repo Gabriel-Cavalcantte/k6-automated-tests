@@ -39,9 +39,9 @@ jobs:
           mkdir -p scripts  # Cria a pasta scripts se não existir
           mv output.html scripts/  # Move o relatório para a pasta scripts
 
-      # Passo 6: Upload do relatório como artefato
+      # Passo 6: Upload do relatório como artefato (usando a versão v4)
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: relatorio-de-testes-de-performance
           path: scripts/output.html  # Caminho do relatório movido
