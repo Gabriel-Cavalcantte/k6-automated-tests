@@ -47,3 +47,18 @@ jobs:
           path: test_results.json
 
         continue-on-error: true
+
+      - name: Install HTML reporter
+        run: npm install -g k6-html-reporter
+
+      - name: Generate HTML report
+        run: |
+          k6-html-reporter \
+            --input test_results.json \
+            --output report.html
+
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v3
+        with:
+          name: k6-html-report
+          path: report.html
