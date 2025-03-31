@@ -9,6 +9,9 @@ jobs:
   load-test:
     name: Run K6 Load Test
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
 
     steps:
 
@@ -19,6 +22,7 @@ jobs:
       - name: Install k6
         run: |
           sudo apt-get update
+          sudo apt-get install -y ca-certificates gnupg2
           sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
           echo "deb https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
           sudo apt-get update
@@ -33,41 +37,29 @@ jobs:
 
       - name: Install HTML reporter
         run: |
-          # Cria ambiente limpo
-          mkdir -p ./.temp_reporter
-          cd ./.temp_reporter
           npm init -y --silent
-          npm install k6-html-reporter --no-package-lock --silent
-          echo "Binário instalado em:"
-          ls -la node_modules/.bin/
-          cd ..
+          npm install k6-html-reporter@latest --no-package-lock --silent
+          echo "Verificando instalação:"
+          ls node_modules/.bin/
 
 
       - name: Run k6 test
         run: |
-          k6 run \
-            --out json=test_results.json \
-            ./Scenarios/Get-Cep.js
-        continue-on-error: true
+          k6 run --out json=test_results.json ./Scenarios/Get-Cep.js || echo "Teste finalizado"
 
 
       - name: Generate HTML report
         run: |
-          npx --prefix ./.temp_reporter k6-html-reporter \
+          ./node_modules/.bin/k6-html-reporter \
             --input test_results.json \
             --output report.html \
-            --title "Relatório de Performance" \
-            --show-json
+            --title "Relatório K6"
 
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: k6-results-${{ github.run_id }}
+          name: k6-results
           path: |
             test_results.json
             report.html
-
-
-      - name: Clean up
-        run: rm -rf ./.temp_reporter
