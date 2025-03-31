@@ -15,6 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+
       - name: Install k6
         run: |
           sudo apt-get update
@@ -23,10 +24,17 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y k6
 
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+
+
+      - name: Install HTML reporter
+        run: npm install k6-html-reporter
+
 
       - name: Run k6 test
         run: |
@@ -35,20 +43,17 @@ jobs:
             ./Scenarios/Get-Cep.js
         continue-on-error: true
 
-      - name: Install HTML reporter
-        run: npm install k6-html-reporter @benc-uk/k6-reporter
 
       - name: Generate HTML report
         run: |
-          ./node_modules/.bin/k6-html-reporter \
+          npx k6-html-reporter \
             --input test_results.json \
             --output report.html \
-            --title "Relatório de Performance" \
-            --show-json
+            --title "Relatório de Performance"
+
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
-
         with:
           name: k6-results-${{ github.run_id }}
           path: |
