@@ -20,11 +20,18 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y k6
 
-      - name: Setup Node.js environment
+      - name: Setup Node.js (simplificado)
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
+          cache-dependency-path: ''  # Ignora a verificação de lock file
+
+      - name: Create minimal package.json
+        run: |
+          if [ ! -f package.json ]; then
+            echo '{"name":"k6-tests","version":"1.0.0"}' > package.json
+          fi
 
       - name: Install reporter globally
         run: sudo npm install -g k6-html-reporter@latest
@@ -34,8 +41,7 @@ jobs:
           k6 run --out json=test_results.json ./Scenarios/Get-Cep.js || echo "Test completed"
 
       - name: Generate HTML report
-        run: |
-          k6-html-reporter --input test_results.json --output report.html --title "Relatório K6"
+        run: k6-html-reporter --input test_results.json --output report.html --title "Relatório K6"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
