@@ -15,7 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Instalação do k6 (mantido igual)
+      # 2. Instalação do k6
       - name: Install k6
         run: |
           sudo apt-get update
@@ -24,24 +24,19 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y k6
 
-      # 3. Configuração do Node.js (modificado)
+      # 3. Configuração do Node.js simplificada
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: ''  # Ignora verificação de lock file
 
-      # 4. Cria package.json mínimo se não existir
-      - name: Create minimal package.json
-        if: !exists('package.json')
-        run: echo '{"name":"k6-tests","version":"1.0.0"}' > package.json
-
-      # 5. Instalação do HTML reporter
+      # 4. Instalação direta do reporter (sem verificação de package.json)
       - name: Install HTML reporter
-        run: npm install k6-html-reporter --no-package-lock
+        run: |
+          npm init -y --silent  # Cria package.json se não existir
+          npm install k6-html-reporter --no-package-lock --silent
 
-      # Restante da pipeline mantido igual...
+      # 5. Execução do teste k6
       - name: Run k6 test
         run: |
           k6 run \
@@ -49,6 +44,7 @@ jobs:
             ./Scenarios/Get-Cep.js
         continue-on-error: true
 
+      # 6. Geração do relatório HTML
       - name: Generate HTML report
         run: |
           npx k6-html-reporter \
@@ -56,6 +52,7 @@ jobs:
             --output report.html \
             --title "Relatório de Performance"
 
+      # 7. Upload dos artifacts
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
