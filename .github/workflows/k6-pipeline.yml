@@ -1,11 +1,12 @@
 name: K6 Load Test
-on: [workflow_dispatch]
-permissions:
-  contents: write
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
 
 jobs:
-  build:
-    name: K6 Load Test
+  load-test:
+    name: Run K6 Load Test
     runs-on: ubuntu-latest
 
     steps:
@@ -15,17 +16,34 @@ jobs:
       - name: Install k6
         run: |
           sudo apt-get update
-          sudo apt-get install -y ca-certificates gnupg2
           sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
           echo "deb https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
           sudo apt-get update
           sudo apt-get install -y k6
 
-      - name: Verify k6 installation
+      - name: Run k6 test with metrics
         run: |
-          k6 version
+          k6 run \
+            --out json=test_results.json \
+            ./Scenarios/Get-Cep.js
 
-      - name: Run k6 load test
+      - name: Upload results as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: k6-results
+          path: test_results.json
+
+      - name: Generate HTML Report (Opcional)
+        if: success()
         run: |
-          k6 run ./index.js 
-          
+          npm install -g k6-html-reporter
+          k6-html-reporter --input test_results.json --output report.html
+        env:
+          BASE_URL: "http://test.k6.io"
+
+      - name: Upload HTML Report
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: k6-html-report
+          path: report.html
