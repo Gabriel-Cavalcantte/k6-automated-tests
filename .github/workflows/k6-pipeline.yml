@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout do código (com fallback para versão estável)
-      - name: Checkout code
-        uses: actions/checkout@v4  # Atualizado para a versão mais recente
 
-      # 2. Instalação do k6 (mantido igual, está correto)
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+
       - name: Install k6
         run: |
           sudo apt-get update
@@ -23,7 +23,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y k6
 
-      # 3. Execução do teste
+
       - name: Run k6 test
         id: k6-test
         run: |
@@ -32,18 +32,18 @@ jobs:
             ./Scenarios/Get-Cep.js || echo "Teste falhou, mas continuando..."
         continue-on-error: true
 
-      # 4. Debug (opcional)
+
       - name: Debug - List files
         run: |
           ls -la
           [ -f test_results.json ] && echo "JSON encontrado!" || echo "JSON NÃO encontrado!"
 
-      # 5. Upload do artifact (com fallback para versão alternativa)
+
       - name: Upload test results
-        uses: actions/upload-artifact@v4  # Versão mais recente
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: k6-results-${{ github.run_id }}
           path: test_results.json
-        # Fallback em caso de erro (executa um comando alternativo)
+
         continue-on-error: true
