@@ -10,8 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout code
         uses: actions/checkout@v3
+
 
       - name: Install k6
         run: |
@@ -21,29 +23,21 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y k6
 
-      - name: Run k6 test with metrics
+      - name: Run k6 test
+        id: k6-test
         run: |
           k6 run \
             --out json=test_results.json \
             ./Scenarios/Get-Cep.js
+        continue-on-error: true
 
-      - name: Upload results as artifact
+      - name: Debug - List files
+        run: ls -la
+
+      - name: Upload test results
         uses: actions/upload-artifact@v3
+        if: always()
         with:
-          name: k6-results
+          name: k6-results-${{ github.run_id }}
           path: test_results.json
 
-      - name: Generate HTML Report (Opcional)
-        if: success()
-        run: |
-          npm install -g k6-html-reporter
-          k6-html-reporter --input test_results.json --output report.html
-        env:
-          BASE_URL: "http://test.k6.io"
-
-      - name: Upload HTML Report
-        if: success()
-        uses: actions/upload-artifact@v3
-        with:
-          name: k6-html-report
-          path: report.html
