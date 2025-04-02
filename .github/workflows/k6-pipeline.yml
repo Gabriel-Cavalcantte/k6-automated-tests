@@ -20,18 +20,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y k6
 
-      - name: Setup Node.js (simplificado)
+      - name: Setup Node.js (sem cache)
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: ''  # Ignora a verificação de lock file
-
-      - name: Create minimal package.json
-        run: |
-          if [ ! -f package.json ]; then
-            echo '{"name":"k6-tests","version":"1.0.0"}' > package.json
-          fi
+          cache: 'false'
 
       - name: Install reporter globally
         run: sudo npm install -g k6-html-reporter@latest
