@@ -1,3 +1,8 @@
 {
-  "type": "module"
+  "name": "k6-automated-tests",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "k6 run ./Scenarios/Get-Cep.js",
+    "test:report": "k6 run --out json=test_results.json ./Scenarios/Get-Cep.js"
+  }
 }
